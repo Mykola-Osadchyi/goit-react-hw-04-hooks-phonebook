@@ -1,0 +1,13 @@
+.list {
+  display: flex;
+  width: 400px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  width: 380px;
+  justify-content: space-between;
+}
