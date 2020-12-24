@@ -1,74 +1,67 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactForm.module.css';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
+export default function ContactForm({ getContact }) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        return;
+    }
   };
 
-  handleChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    this.props.getContact(this.state);
-    this.reset();
+    getContact(name, number);
+    reset();
   };
 
-  reset = () => {
-    this.setState({
-      name: '',
-      number: '',
-    });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    return (
-      <>
-        <form className={s.form} onSubmit={this.handleSubmit}>
-          <label className={s.label}>
-            Name
-            <input
-              type="text"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleChange}
-              className={s.input}
-            />
-          </label>
+  return (
+    <form className={s.form} onSubmit={handleSubmit}>
+      <label className={s.label}>
+        Name
+        <input
+          type="text"
+          name="name"
+          value={name}
+          onChange={handleChange}
+          className={s.input}
+        />
+      </label>
 
-          <label className={s.label}>
-            Number
-            <input
-              type="text"
-              name="number"
-              value={this.state.number}
-              onChange={this.handleChange}
-              className={s.input}
-            />
-          </label>
+      <label className={s.label}>
+        Number
+        <input
+          type="text"
+          name="number"
+          value={number}
+          onChange={handleChange}
+          className={s.input}
+        />
+      </label>
 
-          <button
-            type="submit"
-            disabled={!this.state.number}
-            className={s.button}
-          >
-            Add contact
-          </button>
-        </form>
-      </>
-    );
-  }
+      <button type="submit" disabled={!number} className={s.button}>
+        Add contact
+      </button>
+    </form>
+  );
 }
 
 ContactForm.propTypes = {
   getContact: PropTypes.func.isRequired,
 };
-
-export default ContactForm;
